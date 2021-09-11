@@ -1,0 +1,13 @@
+mutation {
+  addUser(
+    {
+    firstName: "John", 
+    lastName: "Doe", 
+    email: "john.doe@somemail.com"
+    }
+   ) {
+    firstName
+    lastName
+    email
+  }
+}

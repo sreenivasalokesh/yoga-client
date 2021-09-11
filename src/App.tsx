@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { gql, useQuery } from '@apollo/client'
+import { GetUsersQuery, User } from './generated/graphql'
+//import GET_USERS from './graphql/queries/GET_USERS'
+
+const GET_USERS = gql`
+    query GetUsers {
+        users {
+            __typename
+            firstname
+            lastname
+            email
+        }
+    }
+`
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const { data, loading, error } = useQuery<GetUsersQuery>(GET_USERS)
+    if (loading) return <h1>Loading...</h1>
+    if (error) return <h1>{`Error...${error}`}</h1>
+    console.log(data)
+    return (
+        <div className="App">
+            <h1>abcd..</h1>
+
+            {data &&
+                data.users.map((item: any) => (
+                    <div key={item.email}>
+                        <h3>{item.firstname}</h3>
+                        <p>{item.email}</p>
+                    </div>
+                ))}
+        </div>
+    )
 }
 
-export default App;
+export default App
